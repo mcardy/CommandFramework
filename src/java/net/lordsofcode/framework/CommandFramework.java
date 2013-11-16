@@ -60,9 +60,9 @@ public class CommandFramework {
 	public boolean handleCommand(CommandSender sender, String label, org.bukkit.command.Command cmd, String[] args) {
 		for (int i = args.length; i >= 0; i--) {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(label);
+			buffer.append(label.toLowerCase());
 			for (int x = 0; x < i; x++) {
-				buffer.append("." + args[x]);
+				buffer.append("." + args[x].toLowerCase());
 			}
 			String cmdLabel = buffer.toString();
 			if (commandMap.containsKey(cmdLabel)) {
@@ -104,8 +104,8 @@ public class CommandFramework {
 					System.out.println("Unable to register command " + m.getName() + ". Unexpected method arguments");
 				}
 				Entry<Method, Object> entry = new AbstractMap.SimpleEntry<Method, Object>(m, obj);
-				commandMap.put(command.name(), entry);
-				String cmdLabel = command.name().split("\\.")[0];
+				commandMap.put(command.name().toLowerCase(), entry);
+				String cmdLabel = command.name().split("\\.")[0].toLowerCase();
 				register(cmdLabel);
 
 				if (!command.description().equalsIgnoreCase("")) {
@@ -116,8 +116,8 @@ public class CommandFramework {
 				}
 				
 				for (String str : command.aliases()) {
-					commandMap.put(str, entry);
-					String aliasLabel = str.split("\\.")[0];
+					commandMap.put(str.toLowerCase(), entry);
+					String aliasLabel = str.split("\\.")[0].toLowerCase();
 					register(aliasLabel);
 
 					if (!command.description().equalsIgnoreCase("")) {
