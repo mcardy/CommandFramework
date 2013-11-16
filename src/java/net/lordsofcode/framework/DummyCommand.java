@@ -9,6 +9,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * Command Framework - DummyCommand <br>
+ * An implementation of Bukkit's Command class allowing for registering of
+ * commands without plugin.yml
+ * 
+ * @author minnymin3
+ * 
+ */
 public class DummyCommand extends org.bukkit.command.Command {
 
 	private final Plugin owningPlugin;

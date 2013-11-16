@@ -7,6 +7,13 @@ import net.lordsofcode.framework.CommandFramework;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Command Framework - Demo <br>
+ * A demo plugin demonstrating how the command framework works
+ * 
+ * @author michaelcardy
+ * 
+ */
 public class DemoPlugin extends JavaPlugin {
 
 	CommandFramework framework;

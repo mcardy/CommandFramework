@@ -5,6 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Command Framework - Command <br>
+ * The command annotation used to designate methods as commands. All methods
+ * should have a single CommandArgs argument
+ * 
+ * @author minnymin3
+ * 
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
@@ -43,12 +51,14 @@ public @interface Command {
 
 	/**
 	 * The description that will appear in /help of the command
+	 * 
 	 * @return
 	 */
 	public String description() default "";
 
 	/**
 	 * The usage that will appear in /help (commandname)
+	 * 
 	 * @return
 	 */
 	public String usage() default "";

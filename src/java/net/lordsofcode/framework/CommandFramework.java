@@ -14,6 +14,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
+/**
+ * Command Framework - CommandFramework <br>
+ * The main command framework class used for controlling the framework.
+ * 
+ * @author minnymin3
+ * 
+ */
 public class CommandFramework {
 
 	private Map<String, Entry<Method, Object>> commandMap = new HashMap<String, Entry<Method, Object>>();
@@ -22,6 +29,7 @@ public class CommandFramework {
 
 	/**
 	 * Initializes the command framework and sets up the command maps
+	 * 
 	 * @param plugin
 	 */
 	public CommandFramework(Plugin plugin) {
@@ -114,7 +122,7 @@ public class CommandFramework {
 				if (!command.usage().equalsIgnoreCase("")) {
 					map.getCommand(cmdLabel).setUsage(command.usage());
 				}
-				
+
 				for (String str : command.aliases()) {
 					commandMap.put(str.toLowerCase(), entry);
 					String aliasLabel = str.split("\\.")[0].toLowerCase();
@@ -126,7 +134,7 @@ public class CommandFramework {
 					if (!command.usage().equalsIgnoreCase("")) {
 						map.getCommand(aliasLabel).setUsage(command.usage());
 					}
- 				}
+				}
 			}
 		}
 	}

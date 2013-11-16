@@ -3,6 +3,14 @@ package net.lordsofcode.framework;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Command Framework - CommandArgs <br>
+ * This class is passed to the command methods and contains various utilities as
+ * well as the command info.
+ * 
+ * @author minnymin3
+ * 
+ */
 public class CommandArgs {
 
 	private CommandSender sender;
