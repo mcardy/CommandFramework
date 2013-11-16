@@ -28,9 +28,9 @@ public class DemoPlugin extends JavaPlugin {
 
 This example will create a command called test and register it. It will set the description and usage of the command as well. Notice the aliases option. Aliases will be registered the same way as the regular command and are alternate commands that the method will be invoked with. Here is an example of a sub command:
 
-@Command(name = "test.sub", aliases = { "test.subcommand"})
-public void testSub(CommandArgs args) {
-    args.getSender().sendMessage("This is a test subcommand");
-}
+    @Command(name = "test.sub", aliases = { "test.subcommand"})
+    public void testSub(CommandArgs args) {
+        args.getSender().sendMessage("This is a test subcommand");
+    }
 
 This will create a sub command of test and will be executed when someone sends the command '/test sub' or '/test subcommand'. Descriptions and usages also work with these.
