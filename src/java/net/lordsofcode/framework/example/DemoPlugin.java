@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Command Framework - Demo <br>
  * A demo plugin demonstrating how the command framework works
  * 
- * @author michaelcardy
+ * @author minnymin3
  * 
  */
 public class DemoPlugin extends JavaPlugin {
