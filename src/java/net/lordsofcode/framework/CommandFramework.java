@@ -5,12 +5,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
@@ -98,8 +100,8 @@ public class CommandFramework {
 	}
 
 	/**
-	 * Registers all command methods inside of the object. Similar to Bukkit's
-	 * registerEvents method.
+	 * Registers all command and completer methods inside of the object. Similar
+	 * to Bukkit's registerEvents method.
 	 * 
 	 * @param obj
 	 *            The object to register the commands of
@@ -110,39 +112,78 @@ public class CommandFramework {
 				Command command = m.getAnnotation(Command.class);
 				if (m.getParameterTypes().length > 1 || m.getParameterTypes()[0] != CommandArgs.class) {
 					System.out.println("Unable to register command " + m.getName() + ". Unexpected method arguments");
+					continue;
 				}
-				Entry<Method, Object> entry = new AbstractMap.SimpleEntry<Method, Object>(m, obj);
-				commandMap.put(command.name().toLowerCase(), entry);
-				String cmdLabel = command.name().split("\\.")[0].toLowerCase();
-				register(cmdLabel);
-
-				if (!command.description().equalsIgnoreCase("")) {
-					map.getCommand(cmdLabel).setDescription(command.description());
+				registerCommand(command, command.name(), m, obj);
+				for (String alias : command.aliases()) {
+					registerCommand(command, alias, m, obj);
 				}
-				if (!command.usage().equalsIgnoreCase("")) {
-					map.getCommand(cmdLabel).setUsage(command.usage());
+			} else if (m.getAnnotation(Completer.class) != null) {
+				Completer comp = m.getAnnotation(Completer.class);
+				if (m.getParameterTypes().length > 1 || m.getParameterTypes().length == 0 || m.getParameterTypes()[0] != CommandArgs.class) {
+					System.out.println("Unable to register tab completer " + m.getName()
+							+ ". Unexpected method arguments");
+					continue;
 				}
-
-				for (String str : command.aliases()) {
-					commandMap.put(str.toLowerCase(), entry);
-					String aliasLabel = str.split("\\.")[0].toLowerCase();
-					register(aliasLabel);
-
-					if (!command.description().equalsIgnoreCase("")) {
-						map.getCommand(aliasLabel).setDescription(command.description());
-					}
-					if (!command.usage().equalsIgnoreCase("")) {
-						map.getCommand(aliasLabel).setUsage(command.usage());
-					}
+				if (m.getReturnType() != List.class) {
+					System.out.println("Unable to register tab completer " + m.getName() + ". Unexpected return type");
+					continue;
+				}
+				registerCompleter(comp.name(), m, obj);
+				for (String alias : comp.aliases()) {
+					registerCompleter(alias, m, obj);
 				}
 			}
 		}
 	}
 
-	private void register(String label) {
-		if (map.getCommand(label) == null) {
-			org.bukkit.command.Command command = new DummyCommand(label, plugin);
+	private void registerCommand(Command command, String label, Method m, Object obj) {
+		Entry<Method, Object> entry = new AbstractMap.SimpleEntry<Method, Object>(m, obj);
+		commandMap.put(label.toLowerCase(), entry);
+		String cmdLabel = label.replace(".", ",").split(",")[0].toLowerCase();
+		if (map.getCommand(cmdLabel) == null) {
+			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, plugin);
+			map.register(plugin.getName(), cmd);
+		}
+		if (!command.description().equalsIgnoreCase("")) {
+			map.getCommand(cmdLabel).setDescription(command.description());
+		}
+		if (!command.usage().equalsIgnoreCase("")) {
+			map.getCommand(cmdLabel).setUsage(command.usage());
+		}
+	}
+
+	private void registerCompleter(String label, Method m, Object obj) {
+		String cmdLabel = label.replace(".", ",").split(",")[0].toLowerCase();
+		if (map.getCommand(cmdLabel) == null) {
+			org.bukkit.command.Command command = new BukkitCommand(cmdLabel, plugin);
 			map.register(plugin.getName(), command);
+		}
+		if (map.getCommand(cmdLabel) instanceof BukkitCommand) {
+			BukkitCommand command = (BukkitCommand) map.getCommand(cmdLabel);
+			if (command.completer == null) {
+				command.completer = new BukkitCompleter();
+			}
+			command.completer.addCompleter(label, m, obj);
+		} else if (map.getCommand(cmdLabel) instanceof PluginCommand) {
+			try {
+				Object command = map.getCommand(cmdLabel);
+				Field field = command.getClass().getDeclaredField("completer");
+				field.setAccessible(true);
+				if (field.get(command) == null) {
+					BukkitCompleter completer = new BukkitCompleter();
+					completer.addCompleter(label, m, obj);
+					field.set(command, completer);
+				} else if (field.get(command) instanceof BukkitCompleter) {
+					BukkitCompleter completer = (BukkitCompleter) field.get(command);
+					completer.addCompleter(label, m, obj);
+				} else {
+					System.out.println("Unable to register tab completer " + m.getName()
+							+ ". A tab completer is already registered for that command!");
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 

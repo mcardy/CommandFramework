@@ -42,8 +42,8 @@ public @interface Command {
 	public String noPerm() default "You do not have permission to perform that action";
 
 	/**
-	 * A list of alternate names that the command is executed under. Name rules
-	 * apply.
+	 * A list of alternate names that the command is executed under. See
+	 * name() for details on how names work
 	 * 
 	 * @return
 	 */

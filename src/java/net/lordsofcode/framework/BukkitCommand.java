@@ -10,18 +10,18 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Command Framework - DummyCommand <br>
+ * Command Framework - BukkitCommand <br>
  * An implementation of Bukkit's Command class allowing for registering of
  * commands without plugin.yml
  * 
  * @author minnymin3
  * 
  */
-public class DummyCommand extends org.bukkit.command.Command {
+public class BukkitCommand extends org.bukkit.command.Command {
 
 	private final Plugin owningPlugin;
 	private CommandExecutor executor;
-	private TabCompleter completer;
+	protected BukkitCompleter completer;
 
 	/**
 	 * A slimmed down PluginCommand
@@ -29,7 +29,7 @@ public class DummyCommand extends org.bukkit.command.Command {
 	 * @param name
 	 * @param owner
 	 */
-	protected DummyCommand(String label, Plugin owner) {
+	protected BukkitCommand(String label, Plugin owner) {
 		super(label);
 		this.executor = owner;
 		this.owningPlugin = owner;
