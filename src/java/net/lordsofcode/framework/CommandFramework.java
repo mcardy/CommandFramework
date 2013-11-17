@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -145,10 +144,10 @@ public class CommandFramework {
 			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, plugin);
 			map.register(plugin.getName(), cmd);
 		}
-		if (!command.description().equalsIgnoreCase("")) {
+		if (!command.description().equalsIgnoreCase("") && cmdLabel == label) {
 			map.getCommand(cmdLabel).setDescription(command.description());
 		}
-		if (!command.usage().equalsIgnoreCase("")) {
+		if (!command.usage().equalsIgnoreCase("") && cmdLabel == label) {
 			map.getCommand(cmdLabel).setUsage(command.usage());
 		}
 	}
