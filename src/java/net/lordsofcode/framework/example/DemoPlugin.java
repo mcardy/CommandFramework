@@ -35,6 +35,12 @@ public class DemoPlugin extends JavaPlugin {
 		 * Note: Commands do not need to be registered in plugin.yml!
 		 */
 		framework.registerCommands(this);
+		
+		/**
+		 * This will allow for the commands to be visible in the plugin's help
+		 * ie. '/help demo'
+		 */
+		framework.registerHelp();
 	}
 
 	/**

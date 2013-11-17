@@ -8,10 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.help.GenericCommandHelpTopic;
+import org.bukkit.help.HelpTopic;
+import org.bukkit.help.HelpTopicComparator;
+import org.bukkit.help.IndexHelpTopic;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
@@ -136,6 +143,23 @@ public class CommandFramework {
 		}
 	}
 
+	/**
+	 * Registers all the commands under the plugin's help
+	 */
+	public void registerHelp() {
+		Set<HelpTopic> help = new TreeSet<HelpTopic>(HelpTopicComparator.helpTopicComparatorInstance());
+		for (String s : commandMap.keySet()) {
+			if (!s.contains(".")) {
+				org.bukkit.command.Command cmd = map.getCommand(s);
+				HelpTopic topic = new GenericCommandHelpTopic(cmd);
+				help.add(topic);
+			}
+		}
+		IndexHelpTopic topic = new IndexHelpTopic(plugin.getName(), "All commands for " + plugin.getName(), null, help,
+				"Below is a list of all " + plugin.getName() + " commands:");
+		Bukkit.getServer().getHelpMap().addTopic(topic);
+	}
+	
 	private void registerCommand(Command command, String label, Method m, Object obj) {
 		Entry<Method, Object> entry = new AbstractMap.SimpleEntry<Method, Object>(m, obj);
 		commandMap.put(label.toLowerCase(), entry);
