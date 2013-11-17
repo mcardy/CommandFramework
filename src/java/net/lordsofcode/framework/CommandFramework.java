@@ -78,7 +78,7 @@ public class CommandFramework {
 			if (commandMap.containsKey(cmdLabel)) {
 				Entry<Method, Object> entry = commandMap.get(cmdLabel);
 				Command command = entry.getKey().getAnnotation(Command.class);
-				if (!sender.hasPermission(ChatColor.RED + command.permission())) {
+				if (!sender.hasPermission(command.permission())) {
 					sender.sendMessage(command.noPerm());
 					return true;
 				}
