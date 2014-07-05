@@ -29,7 +29,6 @@ public class BukkitCompleter implements TabCompleter {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		for (int i = args.length; i >= 0; i--) {
 			StringBuffer buffer = new StringBuffer();
