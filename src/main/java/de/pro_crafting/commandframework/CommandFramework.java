@@ -1,4 +1,4 @@
-package net.lordsofcode.framework;
+package de.pro_crafting.commandframework;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

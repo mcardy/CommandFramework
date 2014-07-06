@@ -1,4 +1,4 @@
-package net.lordsofcode.framework;
+package de.pro_crafting.commandframework;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
