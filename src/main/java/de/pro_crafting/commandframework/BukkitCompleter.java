@@ -44,7 +44,7 @@ public class BukkitCompleter implements TabCompleter {
 				try {
 					List<String> labelParts = (List<String>) entry.getKey().invoke(entry.getValue(),
 							new CommandArgs(sender, command, cmdLabel, args, cmdLabel.split("\\.").length - 1));
-					if (labelParts.size() == 0)
+					if (labelParts == null || labelParts.size() == 0)
 					{
 						return null;
 					}
