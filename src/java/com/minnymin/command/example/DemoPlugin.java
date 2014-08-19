@@ -1,15 +1,14 @@
-package net.lordsofcode.framework.example;
+package com.minnymin.command.example;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.lordsofcode.framework.Command;
-import net.lordsofcode.framework.CommandArgs;
-import net.lordsofcode.framework.CommandFramework;
-import net.lordsofcode.framework.Completer;
-
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.minnymin.command.Command;
+import com.minnymin.command.CommandArgs;
+import com.minnymin.command.CommandFramework;
+import com.minnymin.command.Completer;
 
 /**
  * Command Framework - Demo <br>

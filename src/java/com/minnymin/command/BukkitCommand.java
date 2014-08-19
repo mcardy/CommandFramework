@@ -1,4 +1,4 @@
-package net.lordsofcode.framework;
+package com.minnymin.command;
 
 import java.util.List;
 

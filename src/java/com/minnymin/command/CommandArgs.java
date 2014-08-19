@@ -1,4 +1,4 @@
-package net.lordsofcode.framework;
+package com.minnymin.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

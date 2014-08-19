@@ -14,11 +14,6 @@ Example:
             // Note: Commands do not need to be registered in plugin.yml
             framework.registerCommands(this);
         }
-
-        @Override
-        public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-            return framework.handleCommand(sender, label, command, args);
-        }
     
         @Command(name = "test", aliases = { "testing" }, description = "This is a test command", usage = "This is how you use it")
        public void test(CommandArgs args) {

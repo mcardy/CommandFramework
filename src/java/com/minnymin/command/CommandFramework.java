@@ -1,4 +1,4 @@
-package net.lordsofcode.framework;
+package com.minnymin.command;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
