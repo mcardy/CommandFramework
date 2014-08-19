@@ -42,16 +42,7 @@ public class DemoPlugin extends JavaPlugin {
 		 */
 		framework.registerHelp();
 	}
-
-	/**
-	 * Just copy and paste this into your main class. This allows the command
-	 * framework to execute the commands
-	 */
-	@Override
-	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-		return framework.handleCommand(sender, label, command, args);
-	}
-
+	
 	/**
 	 * An example command. All commands are required to have a single
 	 * CommandArgs argument
