@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -29,7 +30,7 @@ import org.bukkit.plugin.SimplePluginManager;
  * @author minnymin3
  * 
  */
-public class CommandFramework {
+public class CommandFramework implements CommandExecutor {
 
 	private Map<String, Entry<Method, Object>> commandMap = new HashMap<String, Entry<Method, Object>>();
 	private CommandMap map;
@@ -37,8 +38,6 @@ public class CommandFramework {
 
 	/**
 	 * Initializes the command framework and sets up the command maps
-	 * 
-	 * @param plugin
 	 */
 	public CommandFramework(Plugin plugin) {
 		this.plugin = plugin;
@@ -59,26 +58,27 @@ public class CommandFramework {
 			}
 		}
 	}
-	
+
 	public String[] getCommandLabels()
 	{
 		return this.commandMap.keySet().toArray(new String[0]);
+	}
+
+	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
+		return handleCommand(sender, cmd, label, args);
 	}
 	
 	/**
 	 * Handles commands. Used in the onCommand method in your JavaPlugin class
 	 * 
-	 * @param sender
-	 *            The {@link CommandSender} parsed from onCommand
-	 * @param label
-	 *            The label parsed from onCommand
-	 * @param cmd
-	 *            The {@link org.bukkit.command.Command} parsed from onCommand
-	 * @param args
-	 *            The arguments parsed from onCommand
+	 * @param sender The {@link org.bukkit.command.CommandSender} parsed from
+	 *            onCommand
+	 * @param cmd The {@link org.bukkit.command.Command} parsed from onCommand
+	 * @param label The label parsed from onCommand
+	 * @param args The arguments parsed from onCommand
 	 * @return Always returns true for simplicity's sake in onCommand
 	 */
-	public boolean handleCommand(CommandSender sender, String label, org.bukkit.command.Command cmd, String[] args) {
+	public boolean handleCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
 		for (int i = args.length; i >= 0; i--) {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(label.toLowerCase());
@@ -87,15 +87,16 @@ public class CommandFramework {
 			}
 			String cmdLabel = buffer.toString();
 			if (commandMap.containsKey(cmdLabel)) {
-				Entry<Method, Object> entry = commandMap.get(cmdLabel);
-				Command command = entry.getKey().getAnnotation(Command.class);
-				if (!sender.hasPermission(command.permission())) {
+				Method method = commandMap.get(cmdLabel).getKey();
+				Object methodObject = commandMap.get(cmdLabel).getValue();
+				Command command = method.getAnnotation(Command.class);
+				if (command.permission() != "" && !sender.hasPermission(command.permission())) {
 					sender.sendMessage(command.noPerm());
 					return true;
 				}
 				try {
-					entry.getKey().invoke(entry.getValue(),
-							new CommandArgs(sender, cmd, label, args, cmdLabel.split("\\.").length - 1));
+					method.invoke(methodObject, new CommandArgs(sender, cmd, label, args,
+							cmdLabel.split("\\.").length - 1));
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
@@ -114,8 +115,7 @@ public class CommandFramework {
 	 * Registers all command and completer methods inside of the object. Similar
 	 * to Bukkit's registerEvents method.
 	 * 
-	 * @param obj
-	 *            The object to register the commands of
+	 * @param obj The object to register the commands of
 	 */
 	public void registerCommands(Object obj) {
 		for (Method m : obj.getClass().getMethods()) {
@@ -166,13 +166,12 @@ public class CommandFramework {
 				"Below is a list of all " + plugin.getName() + " commands:");
 		Bukkit.getServer().getHelpMap().addTopic(topic);
 	}
-	
-	private void registerCommand(Command command, String label, Method m, Object obj) {
-		Entry<Method, Object> entry = new AbstractMap.SimpleEntry<Method, Object>(m, obj);
-		commandMap.put(label.toLowerCase(), entry);
+
+	public void registerCommand(Command command, String label, Method m, Object obj) {
+		commandMap.put(label.toLowerCase(), new AbstractMap.SimpleEntry<Method, Object>(m, obj));
 		String cmdLabel = label.replace(".", ",").split(",")[0].toLowerCase();
 		if (map.getCommand(cmdLabel) == null) {
-			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, plugin);
+			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, this, plugin);
 			map.register(plugin.getName(), cmd);
 		}
 		if (!command.description().equalsIgnoreCase("") && cmdLabel == label) {
@@ -183,10 +182,10 @@ public class CommandFramework {
 		}
 	}
 
-	private void registerCompleter(String label, Method m, Object obj) {
+	public void registerCompleter(String label, Method m, Object obj) {
 		String cmdLabel = label.replace(".", ",").split(",")[0].toLowerCase();
 		if (map.getCommand(cmdLabel) == null) {
-			org.bukkit.command.Command command = new BukkitCommand(cmdLabel, plugin);
+			org.bukkit.command.Command command = new BukkitCommand(cmdLabel, this, plugin);
 			map.register(plugin.getName(), command);
 		}
 		if (map.getCommand(cmdLabel) instanceof BukkitCommand) {
@@ -220,5 +219,5 @@ public class CommandFramework {
 	private void defaultCommand(CommandArgs args) {
 		args.getSender().sendMessage(args.getLabel() + " is not handled! Oh noes!");
 	}
-
+	
 }
