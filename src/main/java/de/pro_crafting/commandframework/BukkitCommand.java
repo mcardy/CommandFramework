@@ -29,9 +29,9 @@ public class BukkitCommand extends org.bukkit.command.Command {
 	 * @param name
 	 * @param owner
 	 */
-	protected BukkitCommand(String label, CommandExecutor executor, Plugin owner) {
+	protected BukkitCommand(String label, Plugin owner) {
 		super(label);
-		this.executor = executor;
+		this.executor = owner;
 		this.owningPlugin = owner;
 		this.usageMessage = "";
 	}
