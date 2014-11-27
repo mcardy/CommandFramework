@@ -74,24 +74,7 @@ public class CommandArgs {
 	public String[] getArgs() {
 		return args;
 	}
-	
-	/**
-	 * Gets the argument at the specified index
-	 * @param index The index to get
-	 * @return The string at the specified index
-	 */
-	public String getArgs(int index) {
-		return args[index];
-	}
 
-	/**
-	 * Returns the length of the command arguments
-	 * @return int length of args
-	 */
-	public int length() {
-		return args.length;
-	}
-	
 	public boolean isPlayer() {
 		return sender instanceof Player;
 	}
