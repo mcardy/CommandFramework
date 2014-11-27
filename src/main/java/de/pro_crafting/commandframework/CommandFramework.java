@@ -15,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.help.GenericCommandHelpTopic;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.help.HelpTopicComparator;
@@ -92,10 +91,6 @@ public class CommandFramework {
 				Command command = entry.getKey().getAnnotation(Command.class);
 				if (!sender.hasPermission(command.permission())) {
 					sender.sendMessage(command.noPerm());
-					return true;
-				}
-				if (command.inGameOnly() && !(sender instanceof Player)) {
-					sender.sendMessage("This command is only performable in game");
 					return true;
 				}
 				try {

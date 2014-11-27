@@ -62,11 +62,4 @@ public @interface Command {
 	 * @return
 	 */
 	public String usage() default "";
-	
-	/**
-	 * Whether or not the command is available to players only
-	 * 
-	 * @return
-	 */
-	public boolean inGameOnly() default false;
 }
