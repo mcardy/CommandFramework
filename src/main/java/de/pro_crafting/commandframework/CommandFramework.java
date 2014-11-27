@@ -37,6 +37,8 @@ public class CommandFramework implements CommandExecutor {
 	private CommandMap map;
 	private Plugin plugin;
 
+	private String inGameOnlyMessage;
+	
 	/**
 	 * Initializes the command framework and sets up the command maps
 	 */
@@ -58,6 +60,8 @@ public class CommandFramework implements CommandExecutor {
 				e.printStackTrace();
 			}
 		}
+		
+		this.inGameOnlyMessage = "This command is only performable in game";
 	}
 
 	public String[] getCommandLabels()
@@ -96,7 +100,7 @@ public class CommandFramework implements CommandExecutor {
 					return true;
 				}
 				if (command.inGameOnly() && !(sender instanceof Player)) {
-					sender.sendMessage("This command is only performable in game");
+					sender.sendMessage(this.inGameOnlyMessage);
 					return true;
 				}
 				try {
@@ -223,6 +227,14 @@ public class CommandFramework implements CommandExecutor {
 
 	private void defaultCommand(CommandArgs args) {
 		args.getSender().sendMessage(args.getLabel() + " is not handled! Oh noes!");
+	}
+
+	public String getInGameOnlyMessage() {
+		return this.inGameOnlyMessage;
+	}
+
+	public void setInGameOnlyMessage(String inGameOnlyMessage) {
+		this.inGameOnlyMessage = inGameOnlyMessage;
 	}
 	
 }
