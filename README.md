@@ -13,11 +13,9 @@ Example:
             // This will register all the @Command methods in this class. It can be done with any object
             // Note: Commands do not need to be registered in plugin.yml
             framework.registerCommands(this);
-        }
-
-        @Override
-        public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-            return framework.handleCommand(sender, label, command, args);
+            
+            // This will set the default error message, when a command is only executable per player
+            framework.setInGameOnlyMessage("Der Command muss von einem Spieler ausgeführt werden.");
         }
     
         @Command(name = "test", aliases = { "testing" }, description = "This is a test command", usage = "This is how you use it")
