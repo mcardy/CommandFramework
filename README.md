@@ -18,7 +18,7 @@ Example:
             framework.setInGameOnlyMessage("Der Command muss von einem Spieler ausgeführt werden.");
         }
     
-        @Command(name = "test", aliases = { "testing" }, description = "This is a test command", usage = "This is how you use it")
+        @Command(name = "test", aliases = { "testing" }, description = "This is a test command", usage = "This is how you use it", inGameOnly=true)
        public void test(CommandArgs args) {
             args.getSender().sendMessage("This is a test command");
         }
