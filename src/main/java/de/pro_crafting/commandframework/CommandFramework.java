@@ -36,6 +36,7 @@ public class CommandFramework implements CommandExecutor {
 	private Map<String, Entry<Method, Object>> commandMap = new HashMap<String, Entry<Method, Object>>();
 	private CommandMap map;
 	private Plugin plugin;
+	private String noPerm = null;
 
 	private String inGameOnlyMessage;
 	
@@ -96,8 +97,15 @@ public class CommandFramework implements CommandExecutor {
 				Object methodObject = commandMap.get(cmdLabel).getValue();
 				Command command = method.getAnnotation(Command.class);
 				if (command.permission() != "" && !sender.hasPermission(command.permission())) {
-					sender.sendMessage(command.noPerm());
+					if(command.noPerm() != "You do not have permission to perform that action" || this.noPerm == null){
+						sender.sendMessage(command.noPerm());
+						return true;
+					}
+					
+					sender.sendMessage(this.noPerm);
 					return true;
+					
+					
 				}
 				if (command.inGameOnly() && !(sender instanceof Player)) {
 					sender.sendMessage(this.inGameOnlyMessage);
@@ -118,6 +126,10 @@ public class CommandFramework implements CommandExecutor {
 		}
 		defaultCommand(new CommandArgs(sender, cmd, label, args, 0));
 		return true;
+	}
+	
+	public void setNoPerms(String message){
+		this.noPerm = message;
 	}
 
 	/**
