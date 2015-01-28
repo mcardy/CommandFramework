@@ -97,7 +97,7 @@ public class CommandFramework implements CommandExecutor {
 				Object methodObject = commandMap.get(cmdLabel).getValue();
 				Command command = method.getAnnotation(Command.class);
 				if (command.permission() != "" && !sender.hasPermission(command.permission())) {
-					if(command.noPerm().equals("You do not have permission to perform that action") || this.noPermMessage == null){
+					if(!command.noPerm().equals("You do not have permission to perform that action") || this.noPermMessage == null){
 						sender.sendMessage(command.noPerm());
 						return true;
 					}
