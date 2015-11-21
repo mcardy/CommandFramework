@@ -146,7 +146,7 @@ public class CommandFramework implements CommandExecutor {
 		for (Method m : obj.getClass().getMethods()) {
 			if (m.getAnnotation(Command.class) != null) {
 				Command command = m.getAnnotation(Command.class);
-				if (m.getParameterTypes().length > 1 || m.getParameterTypes()[0] != CommandArgs.class) {
+				if (m.getParameterTypes().length != 1 || m.getParameterTypes()[0] != CommandArgs.class) {
 					plugin.getLogger().warning("Unable to register command " + m.getName() +
 							". Unexpected method arguments");
 					continue;
