@@ -1,3 +1,5 @@
+/.idea
+/CommandFramework.iml
 *.class
 
 # Package Files #
