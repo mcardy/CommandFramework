@@ -89,14 +89,14 @@ public class CommandFramework implements CommandExecutor {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(label.toLowerCase());
 			for (int x = 0; x < i; x++) {
-				buffer.append("." + args[x].toLowerCase());
+				buffer.append(".").append(args[x].toLowerCase());
 			}
 			String cmdLabel = buffer.toString();
 			if (commandMap.containsKey(cmdLabel)) {
 				Method method = commandMap.get(cmdLabel).getKey();
 				Object methodObject = commandMap.get(cmdLabel).getValue();
 				Command command = method.getAnnotation(Command.class);
-				if (command.permission() != "" && !sender.hasPermission(command.permission())) {
+				if (command.permission() != null && !command.permission().isEmpty() && !sender.hasPermission(command.permission())) {
 					if(!command.noPerm().equals("You do not have permission to perform that action") || this.noPermMessage == null){
 						sender.sendMessage(command.noPerm());
 						return true;
@@ -200,10 +200,10 @@ public class CommandFramework implements CommandExecutor {
 			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, this, plugin);
 			map.register(plugin.getName(), cmd);
 		}
-		if (!command.description().equalsIgnoreCase("") && cmdLabel == label) {
+		if (!command.description().equalsIgnoreCase("") && cmdLabel.equals(label)) {
 			map.getCommand(cmdLabel).setDescription(command.description());
 		}
-		if (!command.usage().equalsIgnoreCase("") && cmdLabel == label) {
+		if (!command.usage().equalsIgnoreCase("") && cmdLabel.equals(label)) {
 			map.getCommand(cmdLabel).setUsage(command.usage());
 		}
 	}
