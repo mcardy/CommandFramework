@@ -170,7 +170,7 @@ public class CommandFramework implements CommandExecutor {
 	public void registerCommand(Command command, String label, Method m, Object obj) {
 		commandMap.put(label.toLowerCase(), new AbstractMap.SimpleEntry<Method, Object>(m, obj));
 		commandMap.put(this.plugin.getName() + ':' + label.toLowerCase(), new AbstractMap.SimpleEntry<Method, Object>(m, obj));
-		String cmdLabel = label.replace(".", ",").split(",")[0].toLowerCase();
+		String cmdLabel = label.split("\\.")[0].toLowerCase();
 		if (map.getCommand(cmdLabel) == null) {
 			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, this, plugin);
 			map.register(plugin.getName(), cmd);
@@ -184,7 +184,7 @@ public class CommandFramework implements CommandExecutor {
 	}
 
 	public void registerCompleter(String label, Method m, Object obj) {
-		String cmdLabel = label.replace(".", ",").split(",")[0].toLowerCase();
+		String cmdLabel = label.split("\\.")[0].toLowerCase();
 		if (map.getCommand(cmdLabel) == null) {
 			org.bukkit.command.Command command = new BukkitCommand(cmdLabel, this, plugin);
 			map.register(plugin.getName(), command);
