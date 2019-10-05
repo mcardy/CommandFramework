@@ -87,7 +87,7 @@ public class CommandFramework implements CommandExecutor {
 				Method method = commandMap.get(cmdLabel).getKey();
 				Object methodObject = commandMap.get(cmdLabel).getValue();
 				Command command = method.getAnnotation(Command.class);
-				if (command.permission() != "" && !sender.hasPermission(command.permission())) {
+				if (!command.permission().equals("") && !sender.hasPermission(command.permission())) {
 					sender.sendMessage(command.noPerm());
 					return true;
 				}
@@ -175,10 +175,10 @@ public class CommandFramework implements CommandExecutor {
 			org.bukkit.command.Command cmd = new BukkitCommand(cmdLabel, this, plugin);
 			map.register(plugin.getName(), cmd);
 		}
-		if (!command.description().equalsIgnoreCase("") && cmdLabel == label) {
+		if (!command.description().equalsIgnoreCase("") && cmdLabel.equals(label)) {
 			map.getCommand(cmdLabel).setDescription(command.description());
 		}
-		if (!command.usage().equalsIgnoreCase("") && cmdLabel == label) {
+		if (!command.usage().equalsIgnoreCase("") && cmdLabel.equals(label)) {
 			map.getCommand(cmdLabel).setUsage(command.usage());
 		}
 	}
