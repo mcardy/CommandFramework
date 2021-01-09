@@ -1,4 +1,4 @@
-package de.pro_crafting.commandframework;
+package com.pro_crafting.mc.commandframework;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

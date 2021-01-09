@@ -1,4 +1,4 @@
-package de.pro_crafting.commandframework;
+package com.pro_crafting.mc.commandframework;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

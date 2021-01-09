@@ -1,41 +1,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.pro_crafting</groupId>
-	<artifactId>CommandFramework</artifactId>
-	<version>0.1.3-SNAPSHOT</version>
+	<parent>
+		<groupId>com.pro-crafting</groupId>
+		<artifactId>pc-parent</artifactId>
+		<version>10-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.pro-crafting.mc</groupId>
+	<artifactId>commandframework</artifactId>
+	<version>0.2.0-SNAPSHOT</version>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.spigot-api>1.14.4-R0.1-SNAPSHOT</version.spigot-api>
 	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<compilerVersion>1.8</compilerVersion>
-					<source>1.8</source>
-					<target>1.8</target>
+					<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>pp</id>
-			<url>http://nexus.myplayplanet.net/content/groups/public/</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
+		<!-- External Dependencies -->
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.10.2-R0.1-SNAPSHOT</version>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${version.spigot-api}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

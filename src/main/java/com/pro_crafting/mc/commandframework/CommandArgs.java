@@ -1,4 +1,4 @@
-package de.pro_crafting.commandframework;
+package com.pro_crafting.mc.commandframework;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
