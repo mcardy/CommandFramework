@@ -1,0 +1,3 @@
+name: Demo
+main: com.minnymin.command.example.DemoPlugin
+version: 1.0
